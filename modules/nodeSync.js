@@ -129,6 +129,7 @@ class NodeSync extends EventEmitter {
                             throw new Error(`Unexpected error: ${result.error}`);
                         } else {  // no error, so call again in a bit
                             this.emit('nodeSyncing', result);
+                            store.dispatch({ type: '[MAIN]:GETH_NODE:SYNC_UPDATE', payload: { result } });
 
                             return this._sync();
                         }
@@ -151,6 +152,7 @@ class NodeSync extends EventEmitter {
                                 // need sync if > 1 minute
                                 if (diff > 60) {
                                     this.emit('nodeSyncing', result);
+                                    store.dispatch({ type: '[MAIN]:GETH_NODE:SYNC_UPDATE_ELSE', payload: { result } });
 
                                     log.trace('Keep syncing...');
 

@@ -27,11 +27,30 @@ module.exports = class BaseProcessor {
      * @return {Promise}
      */
     async exec(conn, payload) {
+        const Web3one = require('web3-1.0');
+        const web3one = new Web3one('wss://rinkeby.infura.io/ws');
+
+        // TODO: delegate certain methods to infura/remote node if geth isn't fully synced
+        if (payload.method == 'eth_getBalance') {
+            console.log('∆∆∆ getBalance payload', payload);
+
+            const r = await web3one.eth.getBalance(...payload.params);
+            console.log('∆∆∆ getBalance r', r);
+            return {
+                isBatch: false,
+                result: { jsonrpc: '2.0', id: 97, result: r.toString(16) }
+            };
+        }
+
         this._log.trace('Execute request', payload);
 
         const ret = await conn.socket.send(payload, {
             fullResult: true,
         });
+
+        if (payload.method == 'eth_getBalance') {
+            console.log('∆∆∆ getBalance ret!', ret);
+        }
 
         return ret.result;
     }

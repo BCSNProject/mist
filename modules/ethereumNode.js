@@ -251,13 +251,15 @@ class EthereumNode extends EventEmitter {
      * @param  {Array} [params] Method arguments
      * @return {Promise} resolves to result or error.
      */
-    send(method, params) {
+    async send(method, params) {
         console.log('∆∆∆ ethereumNode method', method);
         console.log('∆∆∆ ethereumNode params', params);
-        return this._socket.send({
+        const x = await this._socket.send({
             method,
             params,
         });
+        console.log('∆∆∆ send response', x);
+        return x;
     }
 
 

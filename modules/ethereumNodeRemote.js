@@ -41,13 +41,13 @@ class EthereumNodeRemote extends EventEmitter {
         // Infura needs to handle:
         // getBlock, isSyncing, getPeerCount?
 
-        const provider = InfuraEndpoints.ethereum.websockets.Main;
+        const provider = InfuraEndpoints.ethereum.websockets.Rinkeby;
         const Web3 = require('web3-1.0');
 		this.web3 = new Web3(provider);
     }
 
     start() {
-        const provider = InfuraEndpoints.ethereum.websockets.Main;
+        const provider = InfuraEndpoints.ethereum.websockets.Rinkeby;
         const Web3 = require('web3-1.0');
         this.web3 = new Web3(provider);
     }
@@ -66,7 +66,7 @@ class EthereumNodeRemote extends EventEmitter {
             if (error) { console.log('Subscription error:', error); }
         })
         .on("data", blockHeader => {
-            console.log('∆∆∆ blockHeader', blockHeader);
+            // console.log('∆∆∆ blockHeader', blockHeader);
             if (blockHeader.number) {
                 store.dispatch({
                     type: '[MAIN]:INFURA_BLOCK_HEADER:RECEIVED',
